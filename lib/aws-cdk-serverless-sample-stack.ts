@@ -1,5 +1,5 @@
 import * as lambda from '@aws-cdk/aws-lambda';
-import * as apigateway from '@aws-cdk/aws-apigateway';
+import * as apig from '@aws-cdk/aws-apigatewayv2';
 import * as cdk from '@aws-cdk/core';
 
 export class AwsCdkServerlessSampleStack extends cdk.Stack {
@@ -17,6 +17,12 @@ def handler(event, context):
       }`),
     });
 
-    new apigateway.LambdaRestApi(this, 'API', { handler })
+    const api = new apig.HttpApi(this, 'Api', {
+      defaultIntegration: new apig.LambdaProxyIntegration({
+        handler
+      })
+    })
+
+    new cdk.CfnOutput(this, 'ApiURL', { value: api.url! })
   }
 }
