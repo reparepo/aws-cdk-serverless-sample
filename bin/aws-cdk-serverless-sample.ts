@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from '@aws-cdk/core';
-import { AwsCdkServerlessSampleStack, MyPipelineStack } from '../lib/aws-cdk-serverless-sample-stack';
+import { AwsCdkServerlessSampleStack, MyPipelineStack } from '../lib';
 
 const app = new cdk.App();
 
