@@ -10,6 +10,12 @@ const env = {
   account: process.env.CDK_DEFAULT_ACCOUNT,
 };
 
+const REGIONS_TO_DEPLOY = [
+  'ap-northeast-1',
+  'us-east-1',
+  'us-west-2',
+]
+
 export class AwsCdkServerlessSampleStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
@@ -67,7 +73,7 @@ export class MyPipelineStack extends cdk.Stack {
       sourceAction: new codepipeline_actions.GitHubSourceAction({
         actionName: 'GitHub',
         output: sourceArtifact,
-        oauthToken: cdk.SecretValue.secretsManager('my-github-token'),
+        oauthToken: cdk.SecretValue.secretsManager('my-github-token', { jsonField: 'token' }),
         trigger: codepipeline_actions.GitHubTrigger.POLL,
         // Replace these with your actual GitHub project name
         owner: 'pahud',
@@ -82,27 +88,33 @@ export class MyPipelineStack extends cdk.Stack {
       }),
     });
 
-    // deploy to Tokyo
-    pipeline.addApplicationStage(new MyApplication(this, 'NRT', { 
-      env: {
-        account: env.account,
-        region: 'ap-northeast-1'
-      } 
-    }))
-    // deploy to US east
-    pipeline.addApplicationStage(new MyApplication(this, 'IAD', {
-      env: {
-        account: env.account,
-        region: 'us-east-1'
-      }
-    }))
+    parallelDeployments(this, 'Deploy', 
+      REGIONS_TO_DEPLOY.map(region => {
+        return new MyApplication(this, `Deploy-${region}`, {
+          env: {
+            account: process.env.CDK_DEFAULT_ACCOUNT,
+            region,
+          }
+        })
+      })
+    )
+    // parallelDeployments(this, 'Deploy', [
+    //   new MyApplication(this, 'Deploy-ap-northeast-1', {
+    //       env: {
+    //         account: process.env.CDK_DEFAULT_ACCOUNT,
+    //         region: 'ap-northeast-1',
+    //       }
+    //     })
+    // ])
 
-    // deploy to US west
-    pipeline.addApplicationStage(new MyApplication(this, 'PDX', {
-      env: {
-        account: env.account,
-        region: 'us-west-2'
+    function parallelDeployments(scope: cdk.Construct, id: string, appStages: cdk.Stage[]) {
+      const deployStage = pipeline.addStage(id);
+      for (const stage of appStages) {
+          const asm = stage.synth()
+          for (const stack of asm.stacks) {
+            deployStage.addStackArtifactDeployment(stack, { runOrder: 1 })
+          }
       }
-    }))
+    }
   }
 }
