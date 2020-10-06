@@ -1,8 +1,8 @@
-import * as cdk from '@aws-cdk/core';
-import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions'
 import * as codepipeline from '@aws-cdk/aws-codepipeline';
+import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
+import * as cdk from '@aws-cdk/core';
 import { SimpleSynthAction, CdkPipeline } from '@aws-cdk/pipelines';
-import { AwsCdkServerlessSampleStack } from './aws-cdk-serverless-sample-stack';
+import { MyStack } from './main';
 
 const env = {
   region: process.env.CDK_DEFAULT_REGION,
@@ -13,7 +13,7 @@ const REGIONS_TO_DEPLOY = [
   'ap-northeast-1',
   'us-east-1',
   'us-west-2',
-]
+];
 
 /**
  * Your application
@@ -24,7 +24,7 @@ class MyApplication extends cdk.Stage {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StageProps) {
     super(scope, id, props);
 
-    new AwsCdkServerlessSampleStack(this, 'AwsCdkServerlessSampleStack');
+    new MyStack(this, 'AwsCdkServerlessSampleStack', { env });
   }
 }
 
@@ -61,23 +61,23 @@ export class MyPipelineStack extends cdk.Stack {
       }),
     });
 
-    parallelDeployments(this, 'Deploy',
+    parallelDeployments(
       REGIONS_TO_DEPLOY.map(region => {
         return new MyApplication(this, `Deploy-${region}`, {
           env: {
             account: process.env.CDK_DEFAULT_ACCOUNT,
             region,
-          }
-        })
-      })
-    )
+          },
+        });
+      }),
+    );
 
-    function parallelDeployments(scope: cdk.Construct, id: string, appStages: cdk.Stage[]) {
+    function parallelDeployments(appStages: cdk.Stage[]) {
       const deployStage = pipeline.addStage(id);
       for (const stage of appStages) {
-        const asm = stage.synth()
+        const asm = stage.synth();
         for (const stack of asm.stacks) {
-          deployStage.addStackArtifactDeployment(stack, { runOrder: 1 })
+          deployStage.addStackArtifactDeployment(stack, { runOrder: 1 });
         }
       }
     }
