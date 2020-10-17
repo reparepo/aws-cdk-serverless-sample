@@ -3,7 +3,7 @@ const {
   GithubWorkflow,
 } = require('projen');
 
-const AUTOMATION_TOKEN = 'GITHUB_TOKEN';
+const AUTOMATION_TOKEN = 'AUTOMATION_GITHUB_TOKEN';
 
 const project = new AwsCdkTypeScriptApp({
   cdkVersion: "1.63.0",
@@ -23,11 +23,6 @@ const project = new AwsCdkTypeScriptApp({
   ]
 });
 
-// project.addDependencies({
-//   "@pahud/aws-codebuild-patterns": Semver.caret('1.1.0'),
-// });
-
-
 // create a custom projen and yarn upgrade workflow
 const workflow = new GithubWorkflow(project, 'ProjenYarnUpgrade');
 
@@ -42,18 +37,17 @@ workflow.addJobs({
   upgrade: {
     'runs-on': 'ubuntu-latest',
     'steps': [
-      ...project.workflowBootstrapSteps,
-
-      // yarn upgrade
-      {
-        run: `yarn upgrade`
+      { uses: 'actions/checkout@v2' },
+      { 
+        uses: 'actions/setup-node@v1',
+        with: {
+          'node-version': '10.17.0',
+        }
       },
-
-      // upgrade projen
-      {
-        run: `yarn projen:upgrade`
-      },
-
+      { run: `yarn install` },
+      { run: `yarn projen` },
+      { run: `yarn upgrade` },
+      { run: `yarn projen:upgrade` },
       // submit a PR
       {
         name: 'Create Pull Request',
@@ -70,8 +64,6 @@ workflow.addJobs({
     ],
   },
 });
-
-
 
 const common_exclude = ['cdk.out', 'cdk.context.json', '.venv', 'images', 'yarn-error.log'];
 project.npmignore.exclude(...common_exclude);
