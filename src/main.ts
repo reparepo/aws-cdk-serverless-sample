@@ -1,4 +1,5 @@
 import * as apig from '@aws-cdk/aws-apigatewayv2';
+import { LambdaProxyIntegration } from '@aws-cdk/aws-apigatewayv2-integrations';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as cdk from '@aws-cdk/core';
 
@@ -19,8 +20,9 @@ def handler(event, context):
       }`),
     });
 
+
     const api = new apig.HttpApi(this, 'Api', {
-      defaultIntegration: new apig.LambdaProxyIntegration({
+      defaultIntegration: new LambdaProxyIntegration({
         handler,
       }),
     });
@@ -39,5 +41,3 @@ const app = new cdk.App();
 
 new MyStack(app, 'my-stack-dev', { env: devEnv });
 // new MyStack(app, 'my-stack-prod', { env: prodEnv });
-
-app.synth();

@@ -6,7 +6,7 @@ const {
 const AUTOMATION_TOKEN = 'AUTOMATION_GITHUB_TOKEN';
 
 const project = new AwsCdkTypeScriptApp({
-  cdkVersion: "1.63.0",
+  cdkVersion: "1.73.0",
   name: "aws-cdk-serverless-sample",
   authorName: "Pahud Hsieh",
   authorEmail: "pahudnet@gmail.com",
@@ -16,6 +16,7 @@ const project = new AwsCdkTypeScriptApp({
   cdkDependencies: [
     "@aws-cdk/core",
     "@aws-cdk/aws-apigatewayv2",
+    "@aws-cdk/aws-apigatewayv2-integrations",
     "@aws-cdk/aws-codepipeline",
     "@aws-cdk/aws-codepipeline-actions",
     "@aws-cdk/aws-lambda",
