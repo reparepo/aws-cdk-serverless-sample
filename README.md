@@ -8,7 +8,8 @@ Sample AWS CDK app for Amazon API Gateway and AWS Lambda.
 # Deploy
 
 ```sh
-cdk diff
-cdk deploy
-cdk destroy
+npx cdk diff
+npx cdk deploy
+npx cdk destroy
 ```
+
