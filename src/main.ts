@@ -31,7 +31,6 @@ def handler(event, context):
   }
 }
 
-// for development, use account/region from cdk cli
 const devEnv = {
   account: process.env.CDK_DEFAULT_ACCOUNT,
   region: process.env.CDK_DEFAULT_REGION,
@@ -39,5 +38,6 @@ const devEnv = {
 
 const app = new cdk.App();
 
-new MyStack(app, 'my-stack-dev', { env: devEnv });
-// new MyStack(app, 'my-stack-prod', { env: prodEnv });
+const stackName = app.node.tryGetContext('stackName') || 'cdk-serverless-demo-stack'
+
+new MyStack(app, stackName, { env: devEnv });
