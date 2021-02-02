@@ -43,6 +43,7 @@ workflow.addJobs({
       },
       { run: 'yarn upgrade' },
       { run: 'yarn projen:upgrade' },
+      { run: 'yarn test' },
       // submit a PR
       {
         name: 'Create Pull Request',
