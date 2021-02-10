@@ -9,6 +9,7 @@ const project = new AwsCdkTypeScriptApp({
   authorEmail: 'pahudnet@gmail.com',
   repository: 'https://github.com/pahud/aws-cdk-serverless-sample.git',
   dependabot: false,
+  defaultReleaseBranch: 'master',
   cdkDependencies: [
     '@aws-cdk/core',
     '@aws-cdk/aws-apigatewayv2',
