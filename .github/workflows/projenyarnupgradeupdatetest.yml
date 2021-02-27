@@ -2,6 +2,8 @@
 
 name: ProjenYarnUpgradeUpdateTest
 on:
+  label:
+    types: [created]
   workflow_dispatch: {}
 jobs:
   upgrade:
@@ -14,6 +16,7 @@ jobs:
       - run: yarn upgrade
       - run: yarn projen:upgrade
       - run: yarn test
+        if: contains(github.event.pull_request.labels.*.name, 'update-test')
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
