@@ -7,7 +7,7 @@ on:
   workflow_dispatch: {}
 jobs:
   upgrade:
-    if: contains(github.event.pull_request.labels.*.name, 'update test')
+    if: contains(github.event.pull_request.labels.*.name, 'update-test')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
