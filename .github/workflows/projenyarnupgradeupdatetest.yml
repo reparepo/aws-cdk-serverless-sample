@@ -2,12 +2,9 @@
 
 name: ProjenYarnUpgradeUpdateTest
 on:
-  pull_request_target:
-    types: [labeled]
   workflow_dispatch: {}
 jobs:
   upgrade:
-    if: contains(github.event.pull_request.labels.*.name, 'update-test')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -26,4 +23,3 @@ jobs:
           title: "chore: upgrade projen and yarn"
           body: This PR upgrades projen and yarn upgrade to the latest version
           labels: auto-merge
-
