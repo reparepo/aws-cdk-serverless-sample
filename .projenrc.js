@@ -9,6 +9,7 @@ const project = new AwsCdkTypeScriptApp({
   authorEmail: 'pahudnet@gmail.com',
   repository: 'https://github.com/pahud/aws-cdk-serverless-sample.git',
   depsUpgrade: DependenciesUpgradeMechanism.githubWorkflow({
+    ignoreProjen: false,
     workflowOptions: {
       labels: ['auto-approve', 'auto-merge'],
       secret: AUTOMATION_TOKEN,
@@ -28,9 +29,6 @@ const project = new AwsCdkTypeScriptApp({
     '@aws-cdk/aws-lambda',
     '@aws-cdk/pipelines',
   ],
-});
-project.package.addField('resolutions', {
-  'trim-newlines': '3.0.1',
 });
 
 const common_exclude = ['cdk.out', 'cdk.context.json', '.venv', 'images', 'yarn-error.log'];
