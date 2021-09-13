@@ -15,6 +15,7 @@ const project = new AwsCdkTypeScriptApp({
       secret: AUTOMATION_TOKEN,
     },
   }),
+  minNodeVersion: '14.17.0',
   autoApproveOptions: {
     secret: 'GITHUB_TOKEN',
     allowedUsernames: ['pahud'],
@@ -30,6 +31,11 @@ const project = new AwsCdkTypeScriptApp({
     '@aws-cdk/pipelines',
   ],
 });
+
+project.package.addField('resolutions', {
+  'pac-resolver': '5.0.0',
+});
+
 
 const common_exclude = ['cdk.out', 'cdk.context.json', '.venv', 'images', 'yarn-error.log'];
 project.npmignore.exclude(...common_exclude);
