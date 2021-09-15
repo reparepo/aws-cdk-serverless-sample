@@ -33,9 +33,9 @@ const project = new AwsCdkTypeScriptApp({
 });
 
 project.package.addField('resolutions', {
-  'pac-resolver': '5.0.0',
+  'pac-resolver': '^5.0.0',
+  'set-value': '^4.0.1',
 });
-
 
 const common_exclude = ['cdk.out', 'cdk.context.json', '.venv', 'images', 'yarn-error.log'];
 project.npmignore.exclude(...common_exclude);
