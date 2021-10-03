@@ -1,4 +1,4 @@
-const { AwsCdkTypeScriptApp, DependenciesUpgradeMechanism, DevEnvironmentDockerImage, Gitpod } = require('projen');
+const { AwsCdkTypeScriptApp, DevEnvironmentDockerImage, Gitpod } = require('projen');
 
 const AUTOMATION_TOKEN = 'PROJEN_GITHUB_TOKEN';
 
@@ -8,14 +8,13 @@ const project = new AwsCdkTypeScriptApp({
   authorName: 'Pahud Hsieh',
   authorEmail: 'pahudnet@gmail.com',
   repository: 'https://github.com/pahud/aws-cdk-serverless-sample.git',
-  depsUpgrade: DependenciesUpgradeMechanism.githubWorkflow({
+  depsUpgradeOptions: {
     ignoreProjen: false,
     workflowOptions: {
       labels: ['auto-approve', 'auto-merge'],
       secret: AUTOMATION_TOKEN,
     },
-  }),
-  minNodeVersion: '14.17.0',
+  },
   autoApproveOptions: {
     secret: 'GITHUB_TOKEN',
     allowedUsernames: ['pahud'],

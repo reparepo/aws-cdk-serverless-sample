@@ -41,7 +41,7 @@
     "jest-junit": "^12",
     "json-schema": "^0.3.0",
     "npm-check-updates": "^11",
-    "projen": "^0.28.33",
+    "projen": "^0.28.34",
     "ts-jest": "^26.5.6",
     "ts-node": "^9",
     "typescript": "^3.9.10"
@@ -57,9 +57,6 @@
     "@aws-cdk/pipelines": "^1.96.0"
   },
   "bundledDependencies": [],
-  "engines": {
-    "node": ">= 14.17.0"
-  },
   "license": "Apache-2.0",
   "version": "0.0.0",
   "jest": {
