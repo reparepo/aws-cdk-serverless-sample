@@ -36,7 +36,6 @@ junit.xml
 /coverage/
 !/.github/workflows/build.yml
 !/.mergify.yml
-!/.github/workflows/upgrade.yml
 !/.github/pull_request_template.md
 !/test/
 !/tsconfig.json
@@ -56,3 +55,4 @@ cdk.context.json
 .venv
 images
 yarn-error.log
+!/.github/workflows/upgrade.yml
